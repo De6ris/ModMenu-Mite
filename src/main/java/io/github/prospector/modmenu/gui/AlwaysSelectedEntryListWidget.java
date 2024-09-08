@@ -7,7 +7,7 @@ package io.github.prospector.modmenu.gui;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
+import net.minecraft.Minecraft;
 
 @Environment(EnvType.CLIENT)
 public abstract class AlwaysSelectedEntryListWidget<E extends EntryListWidget.Entry<E>> extends EntryListWidget<E> {

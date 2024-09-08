@@ -5,15 +5,14 @@ import io.github.prospector.modmenu.config.ModMenuConfigManager;
 import io.github.prospector.modmenu.gui.entries.ChildEntry;
 import io.github.prospector.modmenu.gui.entries.IndependentEntry;
 import io.github.prospector.modmenu.gui.entries.ParentEntry;
+import io.github.prospector.modmenu.util.FabricUtils;
+import io.github.prospector.modmenu.util.LogUtils;
 import io.github.prospector.modmenu.util.ModListSearch;
-import io.github.prospector.modmenu.util.TestModContainer;
-import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.Tessellator;
-import org.apache.logging.log4j.LogManager;
+import net.minecraft.MathHelper;
+import net.minecraft.Minecraft;
+import net.minecraft.Tessellator;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
 
@@ -22,7 +21,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class ModListWidget extends AlwaysSelectedEntryListWidget<ModListEntry> implements AutoCloseable {
-	private static final Logger LOGGER = LogManager.getLogger();
+	private static final Logger LOGGER = LogUtils.getLogger();
 	public static final boolean DEBUG = Boolean.getBoolean("modmenu.debug");
 
 	private final Map<Path, BufferedImage> modIconsCache = new HashMap<>();
@@ -113,12 +112,12 @@ public class ModListWidget extends AlwaysSelectedEntryListWidget<ModListEntry> i
 	private void filter(String searchTerm, boolean refresh, boolean search) {
 		this.clearEntries();
 		addedMods.clear();
-		Collection<ModContainer> mods = FabricLoader.getInstance().getAllMods();
+		Collection<ModContainer> mods = FabricUtils.getAllMods();
 
-		if (DEBUG) {
-			mods = new ArrayList<>(mods);
-			mods.addAll(TestModContainer.getTestModContainers());
-		}
+//		if (DEBUG) {
+//			mods = new ArrayList<>(mods);
+//			mods.addAll(TestModContainer.getTestModContainers());
+//		}// TODO
 
 		if (this.modContainerList == null || refresh) {
 			this.modContainerList = new ArrayList<>();
@@ -249,7 +248,8 @@ public class ModListWidget extends AlwaysSelectedEntryListWidget<ModListEntry> i
 	}
 
 	public final ModListEntry getEntryAtPos(double x, double y) {
-		int int_5 = MathHelper.convertToBlockCoord(y - (double) this.top) - this.headerHeight + (int) this.getScrollAmount() - 4;
+//		int int_5 = MathHelper.convertToBlockCoord(y - (double) this.top) - this.headerHeight + (int) this.getScrollAmount() - 4;
+		int int_5 = MathHelper.floor_double(y - (double) this.top) - this.headerHeight + (int) this.getScrollAmount() - 4;
 		int index = int_5 / this.itemHeight;
 		return x < (double) this.getScrollbarPosition() && x >= (double) getRowLeft() && x <= (double) (getRowLeft() + getRowWidth()) && index >= 0 && int_5 >= 0 && index < this.getItemCount() ? this.children().get(index) : null;
 	}

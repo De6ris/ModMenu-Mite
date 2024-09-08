@@ -4,7 +4,7 @@ import io.github.prospector.modmenu.ModMenu;
 import io.github.prospector.modmenu.gui.ModListScreen;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
-import net.minecraft.client.Minecraft;
+import net.minecraft.Minecraft;
 
 import java.util.Calendar;
 
@@ -37,8 +37,14 @@ public class BadgeRenderer {
 		if (ModMenu.PATCHWORK_FORGE_MODS.contains(metadata.getId())) {
 			drawBadge("Forge", 0x887C89A3, 0x88202C43, mouseX, mouseY);
 		}
-		if (metadata.getId().equals("minecraft")) {
-			drawBadge("Minecraft", 0x88BCBCBC, 0x88535353, mouseX, mouseY);
+//		if (metadata.getId().equals("minecraft")) {
+//			drawBadge("Minecraft", 0x88BCBCBC, 0x88535353, mouseX, mouseY);
+//		}
+		if (metadata.getId().equals("mite")) {
+			drawBadge("Mite", 0x88BCBCBC, 0x88535353, mouseX, mouseY);
+		}
+		if (metadata.getId().equals("fishmodloader")) {
+			drawBadge("FML", 0x88BCBCBC, 0x88535353, mouseX, mouseY);
 		}
 		//noinspection MagicConstant
 		if (Calendar.getInstance().get(0b10) == 0b11 && Calendar.getInstance().get(0b101) == 0x1) {
@@ -53,9 +59,9 @@ public class BadgeRenderer {
 	}
 
 	public void drawBadge(String text, int outlineColor, int fillColor, int mouseX, int mouseY) {
-		int width = client.field_6314_o.getStringWidth(text) + 6;
+		int width = client.fontRenderer.getStringWidth(text) + 6;
 		if (badgeX + width < badgeMax) {
-			RenderUtils.INSTANCE.drawBadge(client.field_6314_o, badgeX, badgeY, width, text, outlineColor, fillColor, 0xCACACA);
+			RenderUtils.INSTANCE.drawBadge(client.fontRenderer, badgeX, badgeY, width, text, outlineColor, fillColor, 0xCACACA);
 			badgeX += width + 3;
 		}
 	}

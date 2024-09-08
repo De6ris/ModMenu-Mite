@@ -1,7 +1,6 @@
 package io.github.prospector.modmenu.util;
 
 import io.github.prospector.modmenu.ModMenu;
-import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 
@@ -52,8 +51,8 @@ public class HardcodedUtil {
 		Matcher matcher = FABRIC_PATTERN.matcher(id);
 		if (matcher.matches() || id.equals("fabric-api-base") || id.equals("fabric-renderer-indigo")) {
 			FABRIC_MODS.add(id);
-			if (FabricLoader.getInstance().isModLoaded("fabric")) {
-				Optional<ModContainer> parent = FabricLoader.getInstance().getModContainer("fabric");
+			if (FabricUtils.isModLoaded("fabric")) {
+				Optional<ModContainer> parent = FabricUtils.getModContainer("fabric");
 				parent.ifPresent(modContainer -> ModMenu.PARENT_MAP.put(modContainer, mod));
 			}
 			ModMenu.addLibraryMod(id);

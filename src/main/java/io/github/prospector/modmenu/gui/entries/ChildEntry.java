@@ -3,7 +3,7 @@ package io.github.prospector.modmenu.gui.entries;
 import io.github.prospector.modmenu.gui.ModListEntry;
 import io.github.prospector.modmenu.gui.ModListWidget;
 import net.fabricmc.loader.api.ModContainer;
-import net.minecraft.client.Minecraft;
+import net.minecraft.Minecraft;
 
 public class ChildEntry extends ModListEntry {
 	private boolean bottomChild;
