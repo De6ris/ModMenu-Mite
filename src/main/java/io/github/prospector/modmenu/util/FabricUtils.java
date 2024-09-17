@@ -35,6 +35,10 @@ public class FabricUtils {
         return "";
     }
 
+	public static File getModsDirectory() {
+		return FishModLoader.MOD_DIR;
+	}
+
     public static String getConfigDirectory() {
         return "config" + File.separator;
     }

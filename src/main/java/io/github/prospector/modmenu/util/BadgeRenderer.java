@@ -29,13 +29,13 @@ public class BadgeRenderer {
 		this.badgeX = startX;
 		this.badgeY = startY;
 		if (ModMenu.LIBRARY_MODS.contains(metadata.getId())) {
-			drawBadge("Library", 0x8810d098, 0x88046146, mouseX, mouseY);
+			drawBadge(StringUtils.translate("modmenu.library"), 0x8810d098, 0x88046146, mouseX, mouseY);
 		}
 		if (ModMenu.CLIENTSIDE_MODS.contains(metadata.getId())) {
-			drawBadge("Client", 0x884383E3, 0x880E4699, mouseX, mouseY);
+			drawBadge(StringUtils.translate("modmenu.clientsideOnly"), 0x884383E3, 0x880E4699, mouseX, mouseY);
 		}
 		if (ModMenu.PATCHWORK_FORGE_MODS.contains(metadata.getId())) {
-			drawBadge("Forge", 0x887C89A3, 0x88202C43, mouseX, mouseY);
+			drawBadge(StringUtils.translate("modmenu.forge"), 0x887C89A3, 0x88202C43, mouseX, mouseY);
 		}
 //		if (metadata.getId().equals("minecraft")) {
 //			drawBadge("Minecraft", 0x88BCBCBC, 0x88535353, mouseX, mouseY);

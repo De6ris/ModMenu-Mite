@@ -17,8 +17,9 @@ public class HardcodedUtil {
 	private static final HashMap<String, String> HARDCODED_DESCRIPTIONS = new HashMap<>();
 
 	public static void initializeHardcodings() {
-		FABRIC_MODS.add("fabric");
-		FABRIC_MODS.add("fabricloader");
+//		FABRIC_MODS.add("fabric");
+//		FABRIC_MODS.add("fabricloader");
+		FABRIC_MODS.add("fishmodloader");
 		HARDCODED_DESCRIPTIONS.put("fabric-api-base", "Contains the essentials for Fabric API modules.");
 		HARDCODED_DESCRIPTIONS.put("fabric-biomes-v1", "Hooks for adding biomes to the default world generator.");
 		HARDCODED_DESCRIPTIONS.put("fabric-commands-v0", "Adds command-related hooks.");

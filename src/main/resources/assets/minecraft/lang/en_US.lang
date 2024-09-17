@@ -21,3 +21,5 @@ modmenu.sorting.ascending=A-Z
 modmenu.sorting.decending=Z-A
 modmenu.minecraft=Minecraft
 modmenu.forge=Forge"
+
+modmenu.versionDescriptor=(%s Mods)
