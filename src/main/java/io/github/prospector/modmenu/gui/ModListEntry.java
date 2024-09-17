@@ -18,129 +18,128 @@ import java.nio.file.Path;
 import java.util.Objects;
 
 public class ModListEntry extends AlwaysSelectedEntryListWidget.Entry<ModListEntry> {
-	private static final Logger LOGGER = LogUtils.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();
 
-	protected final Minecraft client;
-	protected final ModContainer container;
-	protected final ModMetadata metadata;
-	protected final ModListWidget list;
-	protected Integer iconLocation;
+    protected final Minecraft client;
+    protected final ModContainer container;
+    protected final ModMetadata metadata;
+    protected final ModListWidget list;
+    protected Integer iconLocation;
 
-	public ModListEntry(Minecraft mc, ModContainer container, ModListWidget list) {
-		this.container = container;
-		this.list = list;
-		this.metadata = container.getMetadata();
-		this.client = mc;
-	}
+    public ModListEntry(Minecraft mc, ModContainer container, ModListWidget list) {
+        this.container = container;
+        this.list = list;
+        this.metadata = container.getMetadata();
+        this.client = mc;
+    }
 
-	@Override
-	public void render(int index, int y, int x, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean isSelected, float delta) {
-		x += getXOffset();
-		rowWidth -= getXOffset();
-		GL11.glColor4f(1f, 1f, 1f, 1f);
-		this.bindIconTexture();
-		GL11.glEnable(GL11.GL_BLEND);
-		Tessellator tess = Tessellator.instance;
-		tess.startDrawingQuads();
-		tess.addVertexWithUV(x, y, 0, 0, 0);
-		tess.addVertexWithUV(x, y + 32, 0, 0, 1);
-		tess.addVertexWithUV(x + 32, y + 32, 0, 1, 1);
-		tess.addVertexWithUV(x + 32, y, 0, 1, 0);
-		tess.draw();
-		GL11.glDisable(GL11.GL_BLEND);
-		String name = HardcodedUtil.formatFabricModuleName(metadata.getName());
-		String trimmedName = name;
-		int maxNameWidth = rowWidth - 32 - 3;
-		FontRenderer font = this.client.fontRenderer;
-		if (font.getStringWidth(name) > maxNameWidth) {
-			int maxWidth = maxNameWidth - font.getStringWidth("...");
-			trimmedName = "";
-			while (font.getStringWidth(trimmedName) < maxWidth && trimmedName.length() < name.length()) {
-				trimmedName += name.charAt(trimmedName.length());
-			}
-			trimmedName = trimmedName.isEmpty() ? "..." : trimmedName.substring(0, trimmedName.length() - 1) + "...";
-		}
-		font.drawString(trimmedName, x + 32 + 3, y + 1, 0xFFFFFF);
-		new BadgeRenderer(client, x + 32 + 3 + font.getStringWidth(name) + 2, y, x + rowWidth, container, list.getParent()).draw(mouseX, mouseY);
-		String description = metadata.getDescription();
-		if (description.isEmpty() && HardcodedUtil.getHardcodedDescriptions().containsKey(metadata.getId())) {
-			description = HardcodedUtil.getHardcodedDescription(metadata.getId());
-		}
+    @Override
+    public void render(int index, int y, int x, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean isSelected, float delta) {
+        x += getXOffset();
+        rowWidth -= getXOffset();
+        GL11.glColor4f(1f, 1f, 1f, 1f);
+        this.bindIconTexture();
+        GL11.glEnable(GL11.GL_BLEND);
+        Tessellator tess = Tessellator.instance;
+        tess.startDrawingQuads();
+        tess.addVertexWithUV(x, y, 0, 0, 0);
+        tess.addVertexWithUV(x, y + 32, 0, 0, 1);
+        tess.addVertexWithUV(x + 32, y + 32, 0, 1, 1);
+        tess.addVertexWithUV(x + 32, y, 0, 1, 0);
+        tess.draw();
+        GL11.glDisable(GL11.GL_BLEND);
+        String name = HardcodedUtil.formatFabricModuleName(metadata.getName());
+        String trimmedName = name;
+        int maxNameWidth = rowWidth - 32 - 3;
+        FontRenderer font = this.client.fontRenderer;
+        if (font.getStringWidth(name) > maxNameWidth) {
+            int maxWidth = maxNameWidth - font.getStringWidth("...");
+            trimmedName = "";
+            while (font.getStringWidth(trimmedName) < maxWidth && trimmedName.length() < name.length()) {
+                trimmedName += name.charAt(trimmedName.length());
+            }
+            trimmedName = trimmedName.isEmpty() ? "..." : trimmedName.substring(0, trimmedName.length() - 1) + "...";
+        }
+        font.drawString(trimmedName, x + 32 + 3, y + 1, 0xFFFFFF);
+        new BadgeRenderer(client, x + 32 + 3 + font.getStringWidth(name) + 2, y, x + rowWidth, container, list.getParent()).draw(mouseX, mouseY);
+        String description = metadata.getDescription();
+        if (description.isEmpty() && HardcodedUtil.getHardcodedDescriptions().containsKey(metadata.getId())) {
+            description = HardcodedUtil.getHardcodedDescription(metadata.getId());
+        }
 //        RenderUtils.INSTANCE.drawWrappedString(font, description, (x + 32 + 3 + 4), (y + 9 + 2), rowWidth - 32 - 7, 2, 0x808080);
-		RenderUtils.INSTANCE.drawWrappedString(font, description.replace("\n", " "), (x + 32 + 3 + 4), (y + 9 + 2), rowWidth - 32 - 7, 2, 0x808080);
-	}
+        RenderUtils.INSTANCE.drawWrappedString(font, description.replace("\n", " "), (x + 32 + 3 + 4), (y + 9 + 2), rowWidth - 32 - 7, 2, 0x808080);
+    }
 
-	private BufferedImage createIcon() {
-		try {
-			Path path = container.getPath(metadata.getIconPath(0).orElse("assets/" + metadata.getId() + "/icon.png"));
-			BufferedImage cached = this.list.getCachedModIcon(path);
-			if (cached != null) {
-				return cached;
-			}
-			if (!Files.exists(path)) {
-				ModContainer modMenu = FabricUtils.getModContainer(ModMenu.MOD_ID).orElseThrow(IllegalAccessError::new);
-				if (HardcodedUtil.getFabricMods().contains(metadata.getId())) {
-					path = modMenu.getPath("assets/" + ModMenu.MOD_ID + "/fabric_icon.png");
-				} else if (metadata.getId().equals("minecraft") || metadata.getId().equals("mite")) {
-					path = modMenu.getPath("assets/" + ModMenu.MOD_ID + "/mc_icon.png");
+    private BufferedImage createIcon() {
+        try {
+            Path path = container.getPath(metadata.getIconPath(0).orElse("assets/" + metadata.getId() + "/icon.png"));
+            BufferedImage cached = this.list.getCachedModIcon(path);
+            if (cached != null) {
+                return cached;
+            }
+            if (!Files.exists(path)) {
+                ModContainer modMenu = FabricUtils.getModContainer(ModMenu.MOD_ID).orElseThrow(IllegalAccessError::new);
+                if (HardcodedUtil.getFabricMods().contains(metadata.getId())) {
+                    path = modMenu.getPath("assets/" + ModMenu.MOD_ID + "/fabric_icon.png");
+                } else if (metadata.getId().equals("minecraft") || metadata.getId().equals("mite")) {
+                    path = modMenu.getPath("assets/" + ModMenu.MOD_ID + "/minecraft_icon.png");
 				} else if (metadata.getId().equals("java")) {
 					path = modMenu.getPath("assets/" + ModMenu.MOD_ID + "/java_icon.png");
-				} else {
-					path = modMenu.getPath("assets/" + ModMenu.MOD_ID + "/unknown_icon.png");
-				}
+                } else {
+                    path = modMenu.getPath("assets/" + ModMenu.MOD_ID + "/unknown_icon.png");
+                }
+            }
+            cached = this.list.getCachedModIcon(path);
+            if (cached != null) {
+                return cached;
+            }
+            try (InputStream inputStream = Files.newInputStream(path)) {
+                BufferedImage image = ImageIO.read(Objects.requireNonNull(inputStream));
+                if (image.getHeight() != image.getWidth())
+                    throw new IllegalStateException("Must be square icon");
+                this.list.cacheModIcon(path, image);
+                return image;
+            }
 
-			}
-			cached = this.list.getCachedModIcon(path);
-			if (cached != null) {
-				return cached;
-			}
-			try (InputStream inputStream = Files.newInputStream(path)) {
-				BufferedImage image = ImageIO.read(Objects.requireNonNull(inputStream));
-				if (image.getHeight() != image.getWidth())
-					throw new IllegalStateException("Must be square icon");
-				this.list.cacheModIcon(path, image);
-				return image;
-			}
+        } catch (Throwable t) {
+            LOGGER.error("Invalid icon for mod {}", this.container.getMetadata().getName(), t);
+            return null;
+        }
+    }
 
-		} catch (Throwable t) {
-			LOGGER.error("Invalid icon for mod {}", this.container.getMetadata().getName(), t);
-			return null;
-		}
-	}
+    @Override
+    public boolean mouseClicked(double v, double v1, int i) {
+        list.select(this);
+        return true;
+    }
 
-	@Override
-	public boolean mouseClicked(double v, double v1, int i) {
-		list.select(this);
-		return true;
-	}
+    public ModMetadata getMetadata() {
+        return metadata;
+    }
 
-	public ModMetadata getMetadata() {
-		return metadata;
-	}
-
-	public void bindIconTexture() {
-		if (this.iconLocation == null) {
-			BufferedImage icon = this.createIcon();
-			if (icon != null) {
+    public void bindIconTexture() {
+        if (this.iconLocation == null) {
+            BufferedImage icon = this.createIcon();
+            if (icon != null) {
 //				this.iconLocation = this.client.getTextureManager().func_1074_a(icon);
-				this.iconLocation = (new BufferedImageTexture(icon)).getGlTextureId();
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.iconLocation);
-			} else {
+                this.iconLocation = (new BufferedImageTexture(icon)).getGlTextureId();
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.iconLocation);
+            } else {
 //                this.iconLocation = this.client.getTextureManager().getTexture(UNKNOWN_ICON);
-				TextureUtils.bindTexture(TextureUtils.UNKNOWN_ICON);
-			}
-			return;
-		}
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.iconLocation);
-	}
+                TextureUtils.bindTexture(TextureUtils.UNKNOWN_ICON);
+            }
+            return;
+        }
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.iconLocation);
+    }
 
-	public void deleteTexture() {
-		if (iconLocation != null) {
+    public void deleteTexture() {
+        if (iconLocation != null) {
 //			this.client.getTextureManager().func_1078_a(iconLocation);
-		}
-	}
+        }
+    }
 
-	public int getXOffset() {
-		return 0;
-	}
+    public int getXOffset() {
+        return 0;
+    }
 }

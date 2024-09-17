@@ -4,6 +4,7 @@ import io.github.prospector.modmenu.ModMenu;
 import io.github.prospector.modmenu.gui.ModListScreen;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
+import net.minecraft.I18n;
 import net.minecraft.Minecraft;
 
 import java.util.Calendar;
@@ -28,23 +29,14 @@ public class BadgeRenderer {
 	public void draw(int mouseX, int mouseY) {
 		this.badgeX = startX;
 		this.badgeY = startY;
-		if (ModMenu.LIBRARY_MODS.contains(metadata.getId())) {
-			drawBadge(StringUtils.translate("modmenu.library"), 0x8810d098, 0x88046146, mouseX, mouseY);
+		if (ModMenu.LIBRARY_MODS.contains(metadata.getId()) || metadata.getId().equals("java")) {
+			drawBadge(I18n.getString("modmenu.library"), 0x8810d098, 0x88046146, mouseX, mouseY);
 		}
 		if (ModMenu.CLIENTSIDE_MODS.contains(metadata.getId())) {
-			drawBadge(StringUtils.translate("modmenu.clientsideOnly"), 0x884383E3, 0x880E4699, mouseX, mouseY);
+			drawBadge(I18n.getString("modmenu.clientsideOnly"), 0x884383E3, 0x880E4699, mouseX, mouseY);
 		}
-		if (ModMenu.PATCHWORK_FORGE_MODS.contains(metadata.getId())) {
-			drawBadge(StringUtils.translate("modmenu.forge"), 0x887C89A3, 0x88202C43, mouseX, mouseY);
-		}
-//		if (metadata.getId().equals("minecraft")) {
-//			drawBadge("Minecraft", 0x88BCBCBC, 0x88535353, mouseX, mouseY);
-//		}
 		if (metadata.getId().equals("mite")) {
-			drawBadge("Mite", 0x88BCBCBC, 0x88535353, mouseX, mouseY);
-		}
-		if (metadata.getId().equals("fishmodloader")) {
-			drawBadge("FML", 0x88BCBCBC, 0x88535353, mouseX, mouseY);
+			drawBadge("Minecraft-MITE", 0x88BCBCBC, 0x88535353, mouseX, mouseY);
 		}
 		//noinspection MagicConstant
 		if (Calendar.getInstance().get(0b10) == 0b11 && Calendar.getInstance().get(0b101) == 0x1) {

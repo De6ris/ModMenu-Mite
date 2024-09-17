@@ -21,7 +21,7 @@ repositories {
 
 loom {
     mergedMinecraftJar()
-    setFML(new File("D:\\Code\\Java\\FML3.0.0\\lib\\FishModLoader.jar"))
+    setFML(new File("libs\\FishModLoader-v3.3.2.jar"))
     mods {
         "HelloFML" {
             sourceSet sourceSets.main
@@ -39,14 +39,9 @@ dependencies {
     mappings loom.fmlMCPMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    implementation files(loom.getFML().toPath())
-    implementation files("D:\\Code\\Java\\FML3.0.0\\lib\\ManyLib.jar")
-    implementation files("D:\\Code\\Java\\FML3.0.0\\lib\\ModernMite.jar")
-    implementation files("D:\\Code\\Java\\FML3.0.0\\lib\\ommc.jar")
-    implementation files("D:\\Code\\Java\\FML3.0.0\\lib\\GammaFree.jar")
-    implementation files("D:\\Code\\Java\\FML3.0.0\\lib\\Neodymium.jar")
-    implementation files("D:\\Code\\Java\\FML3.0.0\\lib\\FPSPlus.jar")
-    implementation files("D:\\Code\\Java\\FML3.0.0\\lib\\DebrisHUD.jar")
+	implementation files("libs\\ManyLibs-2.2.0.jar")
+	implementation files(loom.getFML().toPath())
+
 }
 
 processResources {

@@ -25,7 +25,7 @@ public class ModMenu implements ClientModInitializer {
     private static final Map<String, Runnable> LEGACY_CONFIG_SCREEN_TASKS = new HashMap<>();
     public static final List<String> LIBRARY_MODS = new ArrayList<>();
     public static final Set<String> CLIENTSIDE_MODS = new HashSet<>();
-    public static final Set<String> PATCHWORK_FORGE_MODS = new HashSet<>();
+	public static final Set<String> PATCHWORK_FORGE_MODS = new HashSet<>();
     public static final LinkedListMultimap<ModContainer, ModContainer> PARENT_MAP = LinkedListMultimap.create();
     //    private static ImmutableMap<String, Function<GuiScreen, ? extends GuiScreen>> configScreenFactories = ImmutableMap.of();
     private static ImmutableMap<String, ConfigScreenFactory<? extends GuiScreen>> configScreenFactories = ImmutableMap.of();

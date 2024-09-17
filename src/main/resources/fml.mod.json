@@ -45,7 +45,8 @@
     "LeonXu98",
     "magneticflux",
     "Earthcomputer",
-    "Debris"
+    "Debris",
+    "Xy_Lose"
   ],
   "description": "Adds a mod menu to view the list of mods you have installed.",
   "mixins": [
